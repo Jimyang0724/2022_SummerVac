@@ -5,3 +5,4 @@ CMakeCache.txt
 .vscode
 *.exe
 cmake_install.cmake
+build
