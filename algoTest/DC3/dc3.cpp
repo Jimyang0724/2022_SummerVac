@@ -6,6 +6,8 @@
 #include <utility>
 #include <algorithm>
 
+#define TEST true
+
 template <typename T>
 auto& operator<<(std::ostream& os, const std::vector<T>& vector) {
     // Printing all the elements
@@ -16,20 +18,28 @@ auto& operator<<(std::ostream& os, const std::vector<T>& vector) {
     return os;
 }
 
-bool compare(std::pair<int,int> frst, std::pair<int,int> scnd) { return frst.second < scnd.second; }
+auto compare(std::pair<int,int> frst, std::pair<int,int> scnd) { return frst.second < scnd.second; }
 
-std::vector<int> dc3(std::vector<int> arr)
+auto dc3(std::vector<int> arr) -> std::vector<int>
 {
 	int original_size = arr.size();
 
 	// B12_index: B1_index concatenate with B2_index = {1, 4, 7, ..., 2, 5, 8, ...}
 	std::vector<int> B12_index;
+
+#if !TEST
 	for (int i=0; i<original_size; i++)
 		if (i%3 == 1)
 			B12_index.push_back(i);
 	for (int i=0; i<original_size; i++)
 		if (i%3 == 2)
 			B12_index.push_back(i);
+#else
+    // std::cout << "TESTING" << std::endl;
+    for (int i=0; i<original_size; i++)
+        if (i%3 != 0)
+            B12_index.push_back(i);
+#endif
 
 	// insert 2 zero at the end of arr
 	arr.push_back(0);
@@ -148,8 +158,8 @@ std::vector<int> dc3(std::vector<int> arr)
 
 int main()
 {
-	// std::string str = "yabbadabbado";
-    std::string str = "dcbabcd";
+	std::string str = "yabbadabbado";
+    // std::string str = "dcbabcd";
 
 
 	// calculate how many kinds of alphabet are there in the string
@@ -172,15 +182,15 @@ int main()
 	new_str.push_back(0);
 	str.push_back('$');
 
-    std::cout << new_str << std::endl << str << std::endl;
+    // std::cout << new_str << std::endl << str << std::endl;
 
 	// construct suffix array
 	std::vector<int> suffix_arr;
 	suffix_arr = dc3(new_str);
 
 	// print result
-	// for (auto index: suffix_arr)
-	// 	std::cout << index << ": " << str.substr(index) << std::endl;
+	for (auto index: suffix_arr)
+		std::cout << index << ": " << str.substr(index) << std::endl;
 
 	return 0;
 }

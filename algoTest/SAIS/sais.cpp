@@ -56,6 +56,7 @@ vector<int> sais(string str)
         cnt++;
     }
     
+    /* change string to rank list */
     vector<int> s;
     for(char ch: str)
         s.push_back(charRank.find(ch)->second);
@@ -64,15 +65,19 @@ vector<int> sais(string str)
     
     /* build type map */
     vector<bool> type(len);
+
+    /* init */
     type[len-1] = S_TYPE;
     type[len-2] = L_TYPE;
 
+    /* classify all suffixes with S and L */
     for(int i = len-3; i >= 0; i--)
     {
         if(s[i] < s[i+1])
             type[i] = S_TYPE;
         else if(s[i] > s[i+1])
             type[i] = L_TYPE;
+        /* equal */
         else
             type[i] = type[i+1];
     }
@@ -84,9 +89,9 @@ vector<int> sais(string str)
         if(type[i] == L_TYPE)
             m[s[i]].L_cnt++;
         else
-            m[s[i]].S_cnt++;    
+            m[s[i]].S_cnt++;
     }
-   
+
     vector<BucketIdx> bucketIdxMap(m.size());
     cnt = 0;
     int  i = 0;
@@ -168,6 +173,10 @@ vector<int> sais(string str)
         SA[bucketIdxMap[firstChar].S_head++] = LMS_v[i].idx;
     }
 
+    for (auto& x: SA)
+        std::cout << x << " ";
+    std::cout << std::endl;
+
     /* place L type into bucket */
     for(int i: SA)
     {
@@ -177,6 +186,10 @@ vector<int> sais(string str)
             SA[place] = i - 1;
         }
     }
+
+    for (auto& x: SA)
+        std::cout << x << " ";
+    std::cout << std::endl;
 
     /* place S type into bucket */
     for(int i = SA.size()-1; i >= 0; i--)
@@ -193,6 +206,11 @@ vector<int> sais(string str)
         }
             
     }
+
+    for (auto& x: SA)
+        std::cout << x << " ";
+    std::cout << std::endl;
+    
     SA.erase(SA.begin());
     return SA;
 }
