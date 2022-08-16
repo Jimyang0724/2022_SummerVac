@@ -7,10 +7,8 @@ namespace question_7b {
     class Printer {
         public:
             static void print() {
-                // if (n != ) {
-                    cout << Q[N-n] << " ";
-                    return Printer<T, N, n-1, Q>::print();
-                // }
+                cout << Q[N-n] << " ";
+                return Printer<T, N, n-1, Q>::print();
             }
     };
 

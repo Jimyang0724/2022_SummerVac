@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.15)
+
+add_library(question_7c_library INTERFACE)
+target_include_directories(question_7c_library INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_compile_features(question_7c_library INTERFACE cxx_std_17)
