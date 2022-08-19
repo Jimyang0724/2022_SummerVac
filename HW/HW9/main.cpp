@@ -9,6 +9,9 @@ int main() {
     // for (auto i : test_date) {
     //     cout << get<0>(i) << " " << get<1>(i) << " " << get<2>(i) << endl;
     // }
-    // trade_date::_calc_date(365);
+    // auto date = trade_date::_calc_date(425);
+    // cout << get<0>(date) << " " << get<1>(date) << " " << get<2>(date) << endl;
+    // cout << "Reverse begin: " << trade_date::_calc_back_to_days(date) << endl;
+    // cout << endl;
     // trade_date::_calc_date(366);
 }

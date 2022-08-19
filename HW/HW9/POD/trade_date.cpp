@@ -10,12 +10,52 @@ using namespace std;
 #define MIN_DATE_DURATION 1
 #define MAX_DATE_DAY (365*100+24)
 
+#define DEBUG false
 
 namespace trade_date {
-    TRADE_DATE::TRADE_DATE(int st_day, int end_day) {
-        begin_date = _calc_date(st_day);
-        end_date = _calc_date(end_day);
-        cout << "generate success" << endl;
+    int TRADE_DATE::ID_counter = 0;
+    TRADE_DATE::TRADE_DATE(int _begin_day, int _end_day): \
+                            ID(ID_counter++), \
+                            duration(_end_day - _begin_day), \
+                            begin_date(_calc_date(_begin_day)), \
+                            end_date(_calc_date(_end_day)) {
+#if DEBUG
+        cout << ID << ": generate success" << endl;
+        cout << "Input begin: " << _begin_day << endl;
+        cout << get<0>(begin_date) << " " << get<1>(begin_date) << " " << get<2>(begin_date) << endl;
+        cout << "Reverse begin: " << _calc_back_to_days(begin_date) << endl;
+        cout << endl;
+
+        cout << "Input end: " << _end_day << endl;
+        cout << get<0>(end_date) << " " << get<1>(end_date) << " " << get<2>(end_date) << endl;
+        cout << "Reverse end: " << _calc_back_to_days(end_date) << endl;
+        cout << endl << endl;
+#endif
+    }
+
+    auto _calc_back_to_days(tuple<int, int, int> date) -> int {
+        // calc days by year (sp case is 1900)
+        auto num_of_years = get<0>(date) - 1900;
+        auto num_days = \
+            (num_of_years == 0) ? 0 : (num_of_years * 365 + num_of_years/4);
+        
+        //calc days by month (sp case is 1900)
+        vector<tuple<int, int>> month{{1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}};
+        if (num_of_years != 0 && num_of_years % 4 == 0) month.at(1) = {2, 29};
+
+        auto temp_days = 0;
+        cout << num_days << " ";
+        for (auto mm : month) {
+            if (get<0>(mm) == get<1>(date)) break;
+            temp_days += get<1>(mm);
+            num_days += get<1>(mm);
+        }
+        cout << temp_days << " ";
+        cout << get<2>(date) << endl;
+
+        // calc days by days
+        num_days += get<2>(date);
+        return num_days;
     }
 
     auto _calc_month(int days, bool leap) -> tuple<int, int> {
@@ -47,10 +87,10 @@ namespace trade_date {
             days -= 365;
 
             auto count = 0;
-            while(days >0) {
+            while(days > 0) {
                 ++ count;
 
-                if (count%4) {  // leap year
+                if ((count)%4 == 0) {  // leap year
                     if (days - 366 <= 0)
                         result = tuple_cat(make_tuple(1900 + count), _calc_month(days, true));
                     days -= 366;
