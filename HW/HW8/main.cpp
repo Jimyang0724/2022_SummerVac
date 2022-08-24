@@ -9,7 +9,7 @@
 using namespace std;
 
 int main() {
-    tuple<int, int, int> t1(1, 2, 3);
+    tuple<int, char, int> t1(1, 'a', 3);
     tuple_printer::printer(t1);
 
     vector<short> v1;
